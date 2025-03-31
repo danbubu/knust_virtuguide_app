@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <title>User Menu - KNUST VIRTUGUIDE</title>
+    <link rel="stylesheet" href="usermenu.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <img src="assets/logo.png" alt="KNUST VIRTUALGUIDE Logo" class="logo">
+        <h3>KNUST VIRTUGUIDE</h3>
+    </header>
+
+    <div class="container">
+        <h2>Your Usage</h2>
+        <div class="plan-box">
+            <p><strong>USER DETAILS</strong></p>
+            <p>Exclusive access to KNUST’s best locations</p>
+            <div id="user-info"></div>
+        </div>
+
+        <section class="menu-section">
+            <h2>Account</h2>
+            <div class="menu-item" onclick="openEditProfile()">
+                <span class="icon">✏️</span>
+                <p>Edit Profile</p>
+            </div>
+            <div class="menu-item" onclick="openFavoritesModal()">
+                <span class="icon">⭐</span>
+                <p>Favorite Locations</p>
+            </div>
+        </section>
+
+
+        <section class="menu-section">
+            <h2>Not Interested Anymore...</h2>
+            <div class="menu-item logout" id="logoutBtn">
+                <p>Sign Out</p>
+            </div>
+        </section>
+    </div>
+
+    <!-- Edit Profile Modal -->
+    <div id="editProfileModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeEditProfile()">&times;</span>
+            <h2>Edit Profile</h2>
+            <form id="editProfileForm">
+                <label for="firstName">First Name:</label>
+                <input type="text" id="firstName" required>
+                <label for="lastName">Last Name:</label>
+                <input type="text" id="lastName" required>
+                <label for="username">Username:</label>
+                <input type="text" id="username" required>
+                <label for="indexNumber">Index Number:</label>
+                <input type="text" id="indexNumber" required>
+                <button type="submit">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Favorites Modal -->
+    <div id="favoritesModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeFavoritesModal()">&times;</span>
+            <h2>Your Favorite Locations</h2>
+            <ul id="favoriteList"></ul>
+        </div>
+    </div>
+
+    <script type="module">
+    import { auth, db } from "./scripts/firebaseConfig.js";
+    import { getDoc, doc, getDocs, collection, query, where, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+    import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
+
+    let currentUser;
+
+    function displayUserData(user) {
+        if (!user) {
+            document.getElementById("user-info").innerHTML = "<p>Please log in to view your profile.</p>";
+            return;
+        }
+        currentUser = user;
+
+        const userRef = doc(db, "users", user.uid);
+        getDoc(userRef).then((docSnap) => {
+            if (docSnap.exists()) {
+                const userData = docSnap.data();
+                document.getElementById("user-info").innerHTML = `
+                    <p><strong>Name:</strong> ${userData.firstName} ${userData.lastName}</p>
+                    <p><strong>Username:</strong> ${userData.username}</p>
+                    <p><strong>Email:</strong> ${userData.email}</p>
+                    <p><strong>Index Number:</strong> ${userData.indexNumber}</p>
+                `;
+
+                // Prefill the form
+                document.getElementById("firstName").value = userData.firstName || "";
+                document.getElementById("lastName").value = userData.lastName || "";
+                document.getElementById("username").value = userData.username || "";
+                document.getElementById("indexNumber").value = userData.indexNumber || "";
+            }
+        });
+    }
+
+    async function fetchFavorites() {
+        const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+        const favoriteList = document.getElementById("favoriteList");
+        favoriteList.innerHTML = "";
+        
+        if (favorites.length === 0) {
+            favoriteList.innerHTML = "<p>No favorite locations yet.</p>";
+            return;
+        }
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelectorAll(".remove-btn").forEach((button) => {
+                button.addEventListener("click", async function () {
+                    const location = this.getAttribute("data-location");
+                    await removeFromFavorites(location);
+                });
+            });
+        });
+
+        favorites.forEach((location) => {
+            const listItem = document.createElement("li");
+            listItem.className = "favorite-item";
+            listItem.innerHTML = `
+                <span>${location}</span>
+                <button class="remove-btn" onclick="window.removeFavorite('${location}')">Remove</button>
+            `;
+            favoriteList.appendChild(listItem);
+        });
+    }
+
+    // Single implementation of removeFavorite
+    window.removeFavorite = function(locationName) {
+        let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+        favorites = favorites.filter(name => name !== locationName);
+        localStorage.setItem('favorites', JSON.stringify(favorites));
+        fetchFavorites(); // Refresh the list immediately
+    };
+
+    // Update modal functions
+    window.openFavoritesModal = function () {
+        document.getElementById("favoritesModal").style.display = "flex";
+        fetchFavorites();
+    };
+
+    window.closeFavoritesModal = function () {
+        document.getElementById("favoritesModal").style.display = "none";
+    };
+
+    // Make removeFavorite available globally
+    window.removeFavorite = async function(docId) {
+        if (!currentUser) return;
+        try {
+            await deleteDoc(doc(db, "favourites", docId));
+            await fetchFavorites(); // Refresh the list
+            alert("Location removed from favorites!");
+        } catch (error) {
+            console.error("Error removing favorite:", error);
+            alert("Error removing location from favorites.");
+        }
+    };
+
+    // Remove the localStorage-based functions
+    // Delete the displayFavorites and old removeFavorite functions
+
+    // Initialize auth state listener
+    onAuthStateChanged(auth, (user) => {
+        displayUserData(user);
+        currentUser = user;
+    });
+
+    function logOut() {
+        signOut(auth)
+            .then(() => {
+                alert("You have been signed out successfully!");
+                window.location.href = "signin.html";
+                displayUserData(null);
+            })
+            .catch((error) => {
+                alert("Error signing out. Please try again.");
+            });
+    }
+
+    document.getElementById("logoutBtn").addEventListener("click", logOut);
+
+    // ✅ **FIX: Ensure modals only open when clicked**
+    window.openEditProfile = function () {
+        document.getElementById("editProfileModal").style.display = "flex";
+    };
+    window.closeEditProfile = function () {
+        document.getElementById("editProfileModal").style.display = "none";
+    };
+    window.openFavoritesModal = function () {
+        document.getElementById("favoritesModal").style.display = "flex";
+        fetchFavorites(); // ✅ Only fetch favorites when modal is opened
+    };
+    window.closeFavoritesModal = function () {
+        document.getElementById("favoritesModal").style.display = "none";
+    };
+
+    document.getElementById("editProfileForm").addEventListener("submit", async function (e) {
+        e.preventDefault();
+        if (!currentUser) return alert("User not logged in");
+
+        const updatedData = {
+            firstName: document.getElementById("firstName").value,
+            lastName: document.getElementById("lastName").value,
+            username: document.getElementById("username").value,
+            indexNumber: document.getElementById("indexNumber").value,
+        };
+
+        try {
+            const userRef = doc(db, "users", currentUser.uid);
+            await updateDoc(userRef, updatedData);
+            alert("Profile updated successfully!");
+            closeEditProfile();
+            displayUserData(currentUser); // Refresh displayed data
+        } catch (error) {
+            alert("Error updating profile.");
+        }
+    });
+
+    function displayFavorites() {
+        const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+        const favoritesList = document.getElementById('favorites-list');
+        const favoritesCount = document.getElementById('favorites-count');
+        
+        if (favoritesCount) {
+            favoritesCount.textContent = favorites.length;
+        }
+        
+        if (favoritesList) {
+            favoritesList.innerHTML = favorites.map(location => `
+                <div class="favorite-item">
+                    <h3>${location}</h3>
+                    <button onclick="removeFavorite('${location}')">Remove</button>
+                </div>
+            `).join('');
+        }
+    }
+
+    function removeFavorite(locationName) {
+        let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+        favorites = favorites.filter(name => name !== locationName);
+        localStorage.setItem('favorites', JSON.stringify(favorites));
+        displayFavorites();
+    }
+
+    // Call this when the page loads
+    window.addEventListener('load', displayFavorites);
+</script>
+
+</body>
+</html>

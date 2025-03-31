@@ -1,0 +1,160 @@
+/* General Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+}
+
+/* Container */
+.container {
+    display: flex;
+    width: 80%;
+    max-width: 900px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+/* Left Section - Login */
+.login-section {
+    flex: 1;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; /* Center content */
+    text-align: center;
+}
+
+.logo img {
+    width: 120px;
+    margin-bottom: 20px;
+}
+
+/* Centered and Spaced Text */
+h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+p {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 20px;
+    line-height: 1.6; /* Increase line spacing */
+}
+
+/* Form */
+form {
+    width: 100%;
+    max-width: 350px;
+}
+
+form input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px; /* Increased spacing */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.error-message {
+    color: red;
+    font-size: 12px;
+    margin-bottom: 10px;
+}
+
+.login-btn {
+    width: 100%;
+    padding: 12px;
+    background: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    margin-top: 10px; /* Add some space above the button */
+}
+
+.login-btn:hover {
+    background: #0056b3;
+}
+/* Password Field Wrapper */
+.password-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+/* Eye Icon */
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-85%);
+    cursor: pointer;
+    color: #777;
+    font-size: 16px;
+}
+
+.toggle-password:hover {
+    color: #333;
+}
+
+
+/* Links */
+.forgot-password, .signup {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.forgot-password a, .signup a {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+.forgot-password a:hover, .signup a:hover {
+    text-decoration: underline;
+}
+
+/* Right Section - Preview */
+.preview-section {
+    flex: 1;
+    background: linear-gradient(to bottom right, #66a3ff, #007BFF);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+
+.preview-section img {
+    width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        width: 90%;
+    }
+
+    .preview-section {
+        display: none;
+    }
+}

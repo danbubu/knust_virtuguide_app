@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KNUST VIRTUGUIDE APP</title>
+    <link rel="stylesheet" href="homepagescreen.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script type="module">
+        import { saveToFavorites } from "./scripts/favourites.js";
+        window.saveToFavorites = saveToFavorites;
+    </script>
+
+    
+<script src="screens.js"></script>
+    
+    <style>
+        
+        .location-list a {
+            color: black;
+            text-decoration: none;
+            font-weight: normal;
+        }
+        .location-list a:hover {
+            color: black;
+        }
+        .fav-icon {
+            cursor: pointer;
+            color: red;
+            font-size: 28px;
+            position: absolute;
+            margin-top: 5px;
+            margin-left: 300px;
+            background: white;
+            padding: 5px;
+            border-radius: 50%;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+        }
+
+
+        
+        /* Favorite button style */
+        .favorite-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .favorite-button:hover {
+            background-color: #0056b3;
+        }
+        /* Make links look like normal text */
+        .location-list a {
+            color: black;
+            text-decoration: none;
+            font-weight: normal;
+        }
+
+        /* Optional: Ensure links don’t change color on hover */
+        .location-list a:hover {
+            color: black;
+        }
+
+        /* Sidebar styling */
+        .sidebar {
+            width: 250px;
+            height: calc(100vh - 50px);
+            background: #f4f4f4;
+            position: fixed;
+            left: 0;
+            top: 50px;
+            overflow-y: auto;
+            transition: transform 0.3s ease-in-out;
+            z-index: 1000;
+            padding-top: 20px;
+            padding-bottom: 40px;
+        }
+
+        /* Search bar styling */
+        .search {
+            display: block;
+            width: 90%;
+            margin: 15px auto 0 auto;
+            padding: 10px;
+        }
+
+        /* Initially hide the sidebar on small screens */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                position: fixed;
+            }
+            .sidebar.active {
+                transform: translateX(0);
+            }
+        }
+
+        /* Header container */
+        .header {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    margin-bottom: 50px; /* Added px */
+    background: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    z-index: 1100;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+        /* Header inner wrapper for centering title */
+        .header-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Hamburger button styling */
+        .hamburger {
+            font-size: 24px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 10px;
+            margin-right: 15px; /* Default spacing */
+        }
+
+        /* Title styling */
+        .title {
+            font-size: 20px;
+            font-weight: bold;
+            flex-grow: 1;
+            text-align: center;
+        }
+
+        /* User icon styling */
+        .user-icon {
+            font-size: 18px;
+            cursor: pointer;
+            color: black;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #f4f4f4;
+            margin-left: 15px;
+            transition: background 0.3s ease;
+        }
+
+        .user-icon:hover {
+            background: #e0e0e0;
+        }
+
+        /* Responsive adjustments for mobile screens */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: block;
+                margin-right: 15px; /* Maintain original spacing */
+            }
+
+            .header-wrapper {
+                position: relative;
+            }
+
+            .title {
+                font-size: 18px;
+                position: absolute;
+                left: 30%;
+                transform: translateX(-50%);
+                text-align: center;
+                width: 100%;
+            }
+
+            .user-icon {
+                margin-left: 0;
+                margin-right: 10px; /* Pulls it from far right */
+            }
+        }
+
+        /* Further adjustment for very small screens */
+        @media (max-width: 480px) {
+            .user-icon {
+                margin-right: 5px; /* Even less margin on very small screens */
+            }
+
+            .title {
+                font-size: 16px; /* Slightly smaller for very small screens */
+            }
+
+            .hamburger {
+                margin-right: 15px; /* Maintain original spacing */
+            }
+        }
+
+        /* Adjustments for large screens */
+        @media (min-width: 1201px) {
+            .header {
+                padding: 10px 0; /* Remove side padding for full width */
+                margin-bottom: 30;
+            }
+
+            .header-wrapper {
+                justify-content: center; /* Center the title and user icon */
+                margin-left: 260px; /* Offset for hamburger and sidebar width */
+            }
+
+            .hamburger {
+                position: absolute;
+                left: 0; /* Far left corner */
+                top: 50%;
+                transform: translateY(-50%); /* Vertically center within header */
+                margin-right: 0; /* Remove default spacing */
+                margin-left: 15px; /* Small padding from edge */
+                z-index: 1200; /* Above sidebar */
+            }
+
+            .title {
+                flex-grow: 0; /* Prevent it from taking extra space */
+                margin: 0; /* Remove auto margin */
+            }
+
+            .user-icon {
+                margin-left: 20px; /* Spacing from title */
+            }
+        }
+
+        /* Adjust sidebar position so it doesn’t cover map buttons */
+        @media (max-width: 768px) {
+            .sidebar {
+                z-index: 999;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div id="toast" class="toast"></div>
+   
+    <!-- Header with Hamburger Menu, Title, and User Icon -->
+    <div class="header">
+        <div class="header-wrapper">
+            <button class="hamburger" onclick="toggleSidebar()">☰</button>
+            <span class="title">KNUST Virtuguide</span>
+           
+            <a href="userpage.html" class="user-icon">👤</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="sidebar" id="sidebar">
+            <div class="logo">
+                <i class="VIRTUALGUIDE-locations"></i>
+            </div>
+            <input type="text" id="search-box" class="search" placeholder="Search...">
+            <div class="filters">
+                <label>Show me:</label>
+                <select>
+                    <option>Open Now</option>
+                    <option>All</option>
+                </select>
+                <label>Sort by:</label>
+                <select>
+                    <option>Nearest</option>
+                    <option>Highest Rated</option>
+                </select>
+                <button class="filter-btn">Filters</button>
+            </div>
+            <ul class="location-list">
+                <li>
+                    <a href="prempeh.html">
+                        <img src="assets/prempehlogo.png" alt="Prempeh II Library">
+                        <div class="location-info">
+                            <h3>Prempeh II Library</h3>
+                            <p>Located at KNUST</p>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="unity.html">
+                        <img src="assets/unityhallogo.png" alt="Unity Hall">
+                        <div class="location-info">
+                            <h3>Unity Hall</h3>
+                            <p>Largest all-male hall in KNUST</p>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="katanga.html">
+                        <img src="assets/katlogo.png" alt="Katanga Hall">
+                        <div class="location-info">
+                            <h3>Katanga Hall</h3>
+                            <p>Famous for its traditions</p>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="Republic.html">
+                        <img src="assets/repulogo.png" alt="Republic Hall">
+                        <div class="location-info">
+                            <h3>Republic Hall</h3>
+                            <p>Popular mixed hall</p>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="queens.html">
+                        <img src="assets/queenslogo.png" alt="Queens Hall">
+                        <div class="location-info">
+                            <h3>Queens Hall</h3>
+                            <p>Known for its vibrant community</p>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="caselyhayford.html">
+                        <img src="assets/caselylogo.png" alt="Casely Hayford">
+                        <div class="location-info">
+                            <h3>Casely Hayford Hall</h3>
+                            <p>Named after J.E. Casely Hayford</p>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div id="map"></div>
+    </div>
+
+
+    <script>
+        // Add this before the map initialization code
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const hamburger = document.querySelector('.hamburger');
+            
+            sidebar.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        
+            // Add animation class
+            if (sidebar.classList.contains('active')) {
+                sidebar.style.transform = 'translateX(0)';
+            } else {
+                sidebar.style.transform = 'translateX(-100%)';
+            }
+        }
+
+        // Close sidebar when clicking outside
+        document.addEventListener('click', function(e) {
+            const sidebar = document.getElementById('sidebar');
+            const hamburger = document.querySelector('.hamburger');
+            
+            if (!sidebar.contains(e.target) && 
+                !hamburger.contains(e.target) && 
+                sidebar.classList.contains('active')) {
+                toggleSidebar();
+            }
+        });
+
+        let map, autocomplete, userMarker, polyline, favIcon;
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: 6.6745, lng: -1.5711 },
+                zoom: 15,
+            });
+
+            // In the initMap function
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const userLocation = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude,
+                        };
+                        map.setCenter(userLocation);
+                        userMarker = new google.maps.Marker({
+                            position: userLocation,
+                            map: map,
+                            title: "Your Location",
+                            label: { text: "You", fontWeight: "bold" }
+                        });
+                    },
+                    () => showToast("Geolocation failed. Using default location."),
+                );
+            }
+
+            const input = document.getElementById("search-box");
+            autocomplete = new google.maps.places.Autocomplete(input);
+            autocomplete.addListener("place_changed", function () {
+                let place = autocomplete.getPlace();
+                if (!place.geometry) return;
+                
+                const destination = place.geometry.location;
+                const marker = new google.maps.Marker({ 
+                    position: destination, 
+                    map: map, 
+                    title: place.name, 
+                    label: { text: place.name, fontWeight: "bold" }
+                });
+                drawPolyline(destination, place.name);
+                addFavoriteIcon(marker, place);
+            });
+        }
+
+        function drawPolyline(destination, destinationName) {
+            if (!userMarker) {
+                showToast("User location not found.");
+                return;
+            }
+            const userLocation = userMarker.getPosition();
+            
+            if (polyline) {
+                polyline.setMap(null);
+            }
+            
+            polyline = new google.maps.Polyline({
+                path: [userLocation, destination],
+                geodesic: true,
+                strokeColor: "#008000",
+                strokeOpacity: 1.0,
+                strokeWeight: 4,
+                map: map,
+            });
+        }
+
+        function addFavoriteIcon(marker, place) {
+            if (favIcon) {
+                favIcon.remove();
+            }
+
+            favIcon = document.createElement("i");
+            favIcon.classList.add("fas", "fa-heart", "fav-icon");
+            favIcon.onclick = () => saveToFavorites(place.name, place.geometry.location.lat(), place.geometry.location.lng());
+            map.controls[google.maps.ControlPosition.TOP_RIGHT].push(favIcon);
+        }
+        document.querySelectorAll(".favorite-heart").forEach((heart) => {
+            heart.addEventListener("click", async function () {
+                const location = this.getAttribute("data-location");
+                this.classList.toggle("favorited");
+                if (this.classList.contains("favorited")) {
+                    this.style.color = "red";
+                    await addToFavorites(location);
+                } else {
+                    this.style.color = "grey";
+                    await removeFromFavorites(location);
+                }
+            });
+        });
+
+        async function saveToFavorites(name, lat, lng) {
+            try {
+                await addDoc(collection(db, "favourites"), {
+                    name: name,
+                    location: { lat, lng }
+                });
+                showToast(`${name} has been added to Favourites section`);
+            } catch (error) {
+                console.error("Error saving location: ", error);
+                showToast("Error saving to favorites");
+            }
+        }
+
+    </script>
+
+
+<script src="screens.js"></script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOc_aOf-SO8JX328V_R34FOBwxiB0bLE4&callback=initMap&libraries=places,geometry" async defer></script>
+
+
+    
+  
+</body>
+</html>
+
+<script>
+    function showToast(message) {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.classList.add('show');
+        
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 2000);
+    }
+
+    function toggleFavorite(heartIcon, locationName) {
+        heartIcon.classList.toggle('active');
+        
+        if (heartIcon.classList.contains('active')) {
+            // Add to favorites
+            let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+            favorites.push(locationName);
+            localStorage.setItem('favorites', JSON.stringify(favorites));
+            showToast(`${locationName} has been added to Favourites section`);
+        } else {
+            // Remove from favorites
+            let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+            favorites = favorites.filter(name => name !== locationName);
+            localStorage.setItem('favorites', JSON.stringify(favorites));
+            showToast(`${locationName} has been removed from Favourites section`);
+        }
+    }
+
+    // Update the saveToFavorites function
+    async function saveToFavorites(name, lat, lng) {
+        try {
+            await addDoc(collection(db, "favourites"), {
+                name: name,
+                location: { lat, lng }
+            });
+            showToast(`${name} has been added to Favourites section`);
+        } catch (error) {
+            console.error("Error saving location: ", error);
+            showToast("Error saving to favorites");
+        }
+    }
+
+    // Check if locations are already favorited on page load
+    window.addEventListener('load', () => {
+        const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+        document.querySelectorAll('.favorite-heart').forEach(heart => {
+            const locationName = heart.closest('li').querySelector('h3').textContent;
+            if (favorites.includes(locationName)) {
+                heart.classList.add('active');
+            }
+        });
+    });
+</script>
+
+
+
+
+
+<head>
+    <style>
+        /* Toast notification styling */
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: white;
+            padding: 16px 32px;
+            border-radius: 8px;
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+    </style>
+</head>

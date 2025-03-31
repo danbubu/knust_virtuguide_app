@@ -1,0 +1,152 @@
+/* General Styles */
+/* styles.css */
+body {
+    position: relative;
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #ffffff;
+    color: #272626;
+}
+
+body.loaded {
+    opacity: 1;
+}
+
+ html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #ffffff;
+    color: #272626;
+}
+
+/* Main Container */
+.container {
+    display: flex;
+    height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 320px;
+    background: #ebebeb;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.logo i {
+    margin-right: 10px;
+}
+
+.search {
+    width: 90%;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    background: #dddddd;
+    color: #6c6a6a;
+    margin-bottom: 15px;
+}
+
+/* Filters */
+.filters {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.filters select,
+.filter-btn {
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    background: #d3d3d3;
+    color: #171717;
+    cursor: pointer;
+}
+
+/* Store List */
+.location-list {
+    list-style: none;
+    padding: 0;
+}
+
+.location-list li {
+    display: flex;
+    align-items: center;
+    background: #c1c0c0;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.location-list li:hover {
+    background: #a6a6a6;
+}
+
+.location-list img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+/* Map Section */
+#map {
+    flex-grow: 1;
+    height: 100vh;
+    background: #2a2a2a;
+}
+
+/* Tour Button Styling */
+.tour-button {
+    display: inline-block;
+    margin-top: 5px;
+    padding: 5px 10px;
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    border-radius: 3px;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.tour-button:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
+.user-icon {
+    position: fixed; /* Use fixed instead of absolute */
+    top: 10px;
+    right: 10px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid black;
+    background: white;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    z-index: 9999; /* Ensures it's on top of everything */
+}
+
+
+.user-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}

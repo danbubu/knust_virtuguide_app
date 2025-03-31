@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In</title>
+    <link rel="stylesheet" href="signinscreen.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Left Side (Login Form) -->
+        <div class="login-section">
+            <div class="logo">
+                <img src="assets/logo.png" alt="Logo">
+            </div>
+            <h2>Sign in to VIRTUGUIDE</h2>
+            <p>Navigate with Ease, Explore Iconic Landmarks, and Experience the Beauty of Our Campus.</p>
+            
+            <form onsubmit="return validateForm(event)">
+                <input type="text" id="emailUsername" placeholder="Email or username">
+                <small class="error-message" id="emailError"></small>
+
+                <input type="password" id="password" placeholder="Password">
+                <small class="error-message" id="passwordError"></small>
+
+                <button type="submit" class="login-btn">Log in</button>
+            </form>
+            
+            <p class="forgot-password"><a href="#">Forgot password?</a></p>
+            <p class="signup">Don't have an account? <a href="signup.html">Sign up</a></p> <!-- Corrected link -->
+        </div>
+
+        <!-- Right Side (Preview Section) -->
+        <div class="preview-section">
+            <div class="preview-content">
+                <img src="assets/tour-img-5.jpg" alt="Dashboard Preview">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function validateForm(event) {
+            event.preventDefault(); // Prevent form submission
+
+            let isValid = true;
+            let emailUsername = document.getElementById("emailUsername").value.trim();
+            let password = document.getElementById("password").value.trim();
+
+            let emailError = document.getElementById("emailError");
+            let passwordError = document.getElementById("passwordError");
+
+            emailError.innerText = "";
+            passwordError.innerText = "";
+
+            if (emailUsername === "") {
+                emailError.innerText = "Email or username is required.";
+                isValid = false;
+            }
+
+            if (password === "") {
+                passwordError.innerText = "Password is required.";
+                isValid = false;
+            }
+
+            if (isValid) {
+                // Redirect to homepage.html upon successful validation
+                window.location.href = "homepage.html";
+                return true;
+            }
+
+            return false;
+        }
+    </script>
+
+    <style>
+        .error-message {
+            color: red;
+            font-size: 12px;
+            display: block;
+            margin-bottom: 10px;
+        }
+    </style>
+
+</body>
+</html>

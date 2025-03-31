@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College of Social Sciences Tour</title>
+    <style>
+        /* Fullscreen Slideshow */
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, "San Francisco", Arial, sans-serif;
+            color: #fff;
+            background-color: black;
+        }
+
+        .slideshow-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+        }
+
+        .mySlides {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: none;
+        }
+
+        .mySlides img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .description {
+            position: absolute;
+            bottom: 60px;
+            left: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 10px 15px;
+            border-radius: 5px;
+        }
+
+        /* Buttons */
+        .button-container {
+            position: absolute;
+            bottom: 90px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-button, .read-button {
+            background-color: #009b17;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .nav-button:hover, .read-button:hover {
+            background-color: #007a27;
+            transform: scale(1.1);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .description {
+                font-size: 18px;
+                bottom: 40px;
+                left: 10px;
+                padding: 8px 12px;
+            }
+            .button-container {
+                bottom: 70px;
+                right: 15px;
+            }
+            .nav-button, .read-button {
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="slideshow-container">
+        <div class="mySlides">
+            <img src="ksbslide1.jpeg" alt="Slide 1">
+            <div class="description">The College of Arts and Social Sciences, now CoHSS, was established on January 4, 2005, along with the other five colleges at KNUST, following the promulgation of new statutes.</div>
+        </div>
+
+        <div class="mySlides">
+            <img src="ksbslide2.jpeg" alt="Slide 2">
+            <div class="description">The CoHSS now comprises three faculties: Law, Social Science, and the School of Business, along with a research center.</div>
+        </div>
+
+        <div class="mySlides">
+            <img src="ksbslide3.jpeg" alt="Slide 3">
+            <div class="description">It initially comprised four academic faculties: Art, Law, School of Business, and Social Sciences, along with the Centre for Cultural and African Studies.</div>
+        </div>
+
+        <!-- Buttons Container -->
+        <div class="button-container">
+            <a href="homepage.html?navigate=College%20of%20Social%20Sciences" class="nav-button">📍</a>
+            <button class="read-button" onclick="readText()">🔊</button>
+        </div>
+    </div>
+
+    <script>
+        let slideIndex = 0;
+
+        function showSlides() {
+            let slides = document.getElementsByClassName("mySlides");
+
+            for (let slide of slides) slide.style.display = "none";
+            
+            slideIndex++;
+            if (slideIndex > slides.length) slideIndex = 1;
+
+            slides[slideIndex - 1].style.display = "block";
+            setTimeout(showSlides, 4000); // Change slide every 4 seconds
+        }
+
+        function readText() {
+            let currentSlide = document.getElementsByClassName("mySlides")[slideIndex - 1];
+            let text = currentSlide.querySelector(".description").textContent;
+            let speech = new SpeechSynthesisUtterance(text);
+            window.speechSynthesis.speak(speech);
+        }
+
+        document.addEventListener("DOMContentLoaded", showSlides);
+    </script>
+
+</body>
+</html>

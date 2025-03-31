@@ -1,0 +1,48 @@
+<head>
+    <!-- Add this line in your head section -->
+    <link rel="stylesheet" href="map.css">
+</head>
+
+<div class="location-popup">
+    <div class="action-buttons">
+        <button onclick="startTour()">Start Tour</button>
+        <i class="fas fa-heart favorite-heart" onclick="toggleFavorite(this, 'College of Humanities')"></i>
+    </div>
+</div>
+
+<script>
+function toggleFavorite(heartIcon, locationName) {
+    let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+    
+    if (heartIcon.classList.contains('active')) {
+        // Remove from favorites
+        favorites = favorites.filter(name => name !== locationName);
+        heartIcon.classList.remove('active');
+    } else {
+        // Add to favorites
+        if (!favorites.includes(locationName)) {
+            favorites.push(locationName);
+        }
+        heartIcon.classList.add('active');
+    }
+    
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+}
+
+// Check if location is already in favorites when popup opens
+function checkFavoriteStatus(locationName) {
+    const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+    const heartIcon = document.querySelector('.favorite-heart');
+    if (favorites.includes(locationName)) {
+        heartIcon.classList.add('active');
+    } else {
+        heartIcon.classList.remove('active');
+    }
+}
+
+// Call this when opening the popup
+document.addEventListener('DOMContentLoaded', () => {
+    // Add this to your existing popup opening logic
+    checkFavoriteStatus('College of Humanities');
+});
+</script>

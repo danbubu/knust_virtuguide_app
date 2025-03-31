@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tour - Casely Hayford</title>
+    <link rel="stylesheet" href="homepagescreen.css">
+    <style>
+        body {
+            background-color: #ffffff;
+            color: #1d1d1f;
+            font-family: -apple-system, BlinkMacSystemFont, "San Francisco", Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+        }
+        body.loaded {
+            opacity: 1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            text-align: center;
+            flex: 1 0 auto;
+        }
+
+        h1 {
+            font-size: 48px;
+            font-weight: 600;
+            margin-bottom: 40px;
+            letter-spacing: -0.02em;
+            color: #1d1d1f;
+        }
+
+        /* Slideshow Styles */
+        .slideshow-container {
+            position: relative;
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto 4px auto; /* 4px bottom margin to button */
+            overflow: hidden;
+            border-radius: 18px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .mySlides {
+            display: none;
+            width: 100%;
+        }
+
+        .mySlides img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+            border-radius: 18px 18px 0 0;
+        }
+
+        .description {
+            background-color: #f5f5f7;
+            padding: 20px;
+            font-size: 18px;
+            line-height: 1.4;
+            color: #515154;
+            border-radius: 0 0 18px 18px;
+        }
+
+        .prev, .next {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            color: #ffffff;
+            font-size: 24px;
+            font-weight: bold;
+            background-color: rgba(0, 0, 0, 0.4);
+            border-radius: 50%;
+            transition: background-color 0.3s ease;
+        }
+
+        .prev {
+            left: 20px;
+        }
+
+        .next {
+            right: 20px;
+        }
+
+        .prev:hover, .next:hover {
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .dots {
+            text-align: center;
+            padding: 15px 0;
+        }
+
+        .dot {
+            cursor: pointer;
+            height: 10px;
+            width: 10px;
+            margin: 0 6px;
+            background-color: #d2d2d7;
+            border-radius: 50%;
+            display: inline-block;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .dot:hover, .dot.active {
+            background-color: #1d1d1f;
+            transform: scale(1.2);
+        }
+
+        /* Navigate Button */
+        .navigate-button {
+            display: inline-block;
+            margin-left: 240px;
+            align-items: center;
+            justify-content: center;
+            width: 290px; /* Quarter of 1000px slideshow width */
+            padding: 25px 0; /* Vertical padding for height */
+            background-color: #009b17;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 400;
+            text-decoration: none;
+            border-radius: 12px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .navigate-button:hover {
+            background-color: #007a27;
+            transform: scale(1.05);
+        }
+
+        .navigate-button:active {
+            transform: scale(0.98);
+        }
+
+        /* Button Container */
+        .button-container {
+            text-align: center;
+            padding: 0 0 4px 0; /* 4px bottom padding to page edge */
+            flex-shrink: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Casely Hayford Tour</h1>
+        
+        <!-- Slideshow -->
+        <div class="slideshow-container">
+            <div class="mySlides">
+                <img src="caselyslide1.jpg" alt="Slide 1">
+                <div class="description">The prominent entrance to the Casely Hayford building.</div>
+            </div>
+
+            <div class="mySlides">
+                <img src="caselyslide2.jpg" alt="Slide 2">
+                <div class="description">A modern lecture hall within the Casely Hayford complex.</div>
+            </div>
+
+            <div class="mySlides">
+                <img src="caselyslide3.jpg" alt="Slide 3">
+                <div class="description">The Casely Hayford building’s serene study area.</div>
+            </div>
+
+            <a class="prev" onclick="plusSlides(-1)"></a>
+            <a class="next" onclick="plusSlides(1)"></a>
+        </div>
+
+        <div class="dots">
+            <span class="dot" onclick="currentSlide(1)"></span>
+            <span class="dot" onclick="currentSlide(2)"></span>
+            <span class="dot" onclick="currentSlide(3)"></span>
+        </div>
+    </div>
+
+    <!-- Navigate Button at Bottom -->
+    <div class="button-container">
+        <a href="homepage.html?navigate=Casely Hayford" class="navigate-button">Navigate</a>
+    </div>
+
+    <script>
+        let slideIndex = 1;
+        showSlides(slideIndex);
+
+        function plusSlides(n) {
+            showSlides(slideIndex += n);
+        }
+
+        function currentSlide(n) {
+            showSlides(slideIndex = n);
+        }
+
+        function showSlides(n) {
+            let i;
+            let slides = document.getElementsByClassName("mySlides");
+            let dots = document.getElementsByClassName("dot");
+            if (n > slides.length) { slideIndex = 1; }
+            if (n < 1) { slideIndex = slides.length; }
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
+            }
+            slides[slideIndex-1].style.display = "block";
+            dots[slideIndex-1].className += " active";
+        }
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.body.classList.add("loaded");
+        });
+    </script>
+</body>
+</html>

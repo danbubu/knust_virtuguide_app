@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtuguide</title>
+    <link rel="stylesheet" href="homepagescreen.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        /* Make links look like normal text */
+        .location-list a {
+            color: black;
+            text-decoration: none;
+            font-weight: normal;
+        }
+
+        /* Optional: Ensure links don’t change color on hover */
+        .location-list a:hover {
+            color: black;
+        }
+
+        /* Sidebar styling */
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background: #f4f4f4;
+            position: fixed;
+            left: 0;
+            top: 0;
+            overflow-y: auto;
+            transition: transform 0.3s ease-in-out;
+            z-index: 1000;
+            padding-top: 50px; /* Prevent overlap with header */
+        }
+
+        /* Initially hide the sidebar on small screens */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                position: fixed;
+            }
+            .sidebar.active {
+                transform: translateX(0);
+            }
+        }
+
+        /* Header container */
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            background: white;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1100;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Hamburger button styling */
+        .hamburger {
+            font-size: 24px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            margin-right: 15px;
+        }
+
+        /* Title styling */
+        .title {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        /* Ensure the hamburger is visible only on small screens */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: block;
+            }
+            .sidebar {
+                padding-top: 60px; /* More space for header */
+            }
+        }
+
+        /* Adjust sidebar position so it doesn’t cover map buttons */
+        @media (max-width: 768px) {
+            .sidebar {
+                z-index: 999;
+            }
+        }
+
+        /* Map container */
+        #map {
+            position: relative;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header with Hamburger Menu and Title -->
+    <div class="header">
+        <button class="hamburger" onclick="toggleSidebar()">☰</button>
+        <span class="title">KNUST Virtuguide</span>
+    </div>
+
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <input type="text" class="search" placeholder="Search...">
+            <div class="filters">
+                <label>Show me:</label>
+                <select>
+                    <option>Open Now</option>
+                    <option>All</option>
+                </select>
+                <label>Sort by:</label>
+                <select>
+                    <option>Nearest</option>
+                    <option>Highest Rated</option>
+                </select>
+                <button class="filter-btn">Filters</button>
+            </div>
+            <ul class="location-list">
+                <li>
+                    <img src="assets/prempehlogo.png" alt="Library">
+                    <a href="prempeh.html"><span>Prempeh II Library</span></a>
+                    <p>Located at KNUST</p>
+                </li>
+                <li>
+                    <img src="assets/unityhallogo.png" alt="Unity Hall">
+                    <a href="unity.html"><span>Unity Hall</span></a>
+                    <p>Largest all-male hall in KNUST</p>
+                </li>
+                <li>
+                    <img src="assets/katlogo.png" alt="Katanga Hall">
+                    <a href="katanga.html"><span>Katanga Hall</span></a>
+                    <p>Famous for its traditions</p>
+                </li>
+                <li>
+                    <img src="assets/repulogo.png" alt="Republic Hall">
+                    <a href="Republic.html"><span>Republic Hall</span></a>
+                    <p>Popular mixed hall</p>
+                </li>
+                <li>
+                    <img src="assets/queenslogo.png" alt="Queens Hall">
+                    <a href="queens.html"><span>Queens Hall</span></a>
+                    <p>Known for its vibrant community</p>
+                </li>
+                <li>
+                    <img src="assets/caselylogo.png" alt="Casely Hayford">
+                    <a href="caselyhayford.html"><span>Casely Hayford Hall</span></a>
+                    <p>Named after J.E. Casely Hayford</p>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Map Section -->
+        <div id="map"></div>
+    </div>
+
+    <script src="screens.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOc_aOf-SO8JX328V_R34FOBwxiB0bLE4&callback=initMap&libraries=geometry" async defer></script>
+
+    <script>
+        function toggleSidebar() {
+            document.getElementById("sidebar").classList.toggle("active");
+        }
+    </script>
+</body>
+</html>

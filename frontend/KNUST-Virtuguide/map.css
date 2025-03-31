@@ -1,0 +1,28 @@
+.favorite-heart {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    color: rgba(128, 128, 128, 0.5);
+    cursor: pointer;
+    transition: color 0.3s ease;
+    font-size: 20px;
+}
+
+.favorite-heart.active {
+    color: #ff0000;
+}
+
+.location-list li {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 12px;
+    background: linear-gradient(145deg, #ffffff, #f0f0f0);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+/* ... rest of your CSS ... */

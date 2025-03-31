@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="signupscreen.css">
+</head>
+<body>
+    <div class="container">
+        <div class="signup-section">
+            <div class="logo">
+                <img src="assets/logo.png" alt="Logo">
+            </div>
+            <h2>Create Your VIRTUGUIDE Account</h2>
+            <p>Explore the campus with ease and navigate iconic landmarks.</p>
+            
+            <form id="signupForm">
+                <div class="input-group">
+                    <input type="text" id="firstName" placeholder="First Name" required>
+                    <input type="text" id="lastName" placeholder="Last Name" required>
+                </div>
+                <input type="text" id="indexNumber" placeholder="Index Number" required>
+                <input type="email" id="email" placeholder="Email" required>
+                <input type="text" id="username" placeholder="Username" required>
+                <div class="input-group">
+                    <input type="password" id="password" placeholder="Create Password" required>
+                    <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+                </div>
+                <button type="submit" class="signup-btn">Sign Up</button>
+            </form>
+            <p class="signin">Already have an account? <a href="signin.html">Sign in</a></p>
+        </div>
+        <div class="preview-section">
+            <div class="preview-content">
+                <img src="assets/pr2.png" alt="Preview Image">
+            </div>
+        </div>
+    </div>
+<!-- OTP Modal -->
+<div id="otpModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <h3>Enter OTP</h3>
+        <p>A one-time password has been sent to your email.</p>
+        <input type="text" id="otpCode" placeholder="Enter OTP" required>
+        <button id="verifyOtpBtn">Verify</button>
+        <p id="otpError" class="error-message"></p>
+    </div>
+</div>
+
+</div>
+
+<script>
+    document.getElementById("signupForm").addEventListener("submit", async function(event) {
+        event.preventDefault();
+        
+        const email = document.getElementById("email").value;
+        
+        try {
+            const response = await fetch("http://localhost:3000/api/otp/generate-otp", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email })
+            });
+            
+            const result = await response.json();
+            if (result.success) {
+                showModal(); // Show OTP modal
+            } else {
+                alert("Failed to send OTP. Please try again.");
+            }
+        } catch (error) {
+            console.error("Error sending OTP:", error);
+        }
+    });
+
+    // Function to show the modal
+    function showModal() {
+        const modal = document.getElementById("otpModal");
+        modal.style.display = "flex";
+    }
+
+    // Function to hide the modal
+    function hideModal() {
+        const modal = document.getElementById("otpModal");
+        modal.style.display = "none";
+    }
+
+    document.getElementById("verifyOtpBtn").addEventListener("click", async function() {
+        const email = document.getElementById("email").value;
+        const otp = document.getElementById("otpCode").value;
+
+        try {
+            const response = await fetch("http://localhost:3000/api/otp/verify-otp", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, otp })
+            });
+            
+            const result = await response.json();
+            if (result.success) {
+                hideModal(); // Hide OTP modal on success
+                alert("OTP Verified! Registering your account...");
+                registerUser(); // Call function to register user
+            } else {
+                document.getElementById("otpError").innerText = "Invalid OTP. Please try again.";
+            }
+        } catch (error) {
+            console.error("Error verifying OTP:", error);
+        }
+    });
+
+    async function registerUser() {
+        const userData = {
+            firstName: document.getElementById("firstName").value,
+            lastName: document.getElementById("lastName").value,
+            indexNumber: document.getElementById("indexNumber").value,
+            email: document.getElementById("email").value,
+            username: document.getElementById("username").value,
+            password: document.getElementById("password").value
+        };
+        
+        try {
+            const response = await fetch("http://localhost:3000/api/otp/register", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(userData)
+            });
+            
+            const result = await response.json();
+            if (result.success) {
+                alert("Registration Successful!");
+                window.location.href = "signin.html";
+            } else {
+                alert("Failed to register user");
+            }
+        } catch (error) {
+            console.error("Error registering user:", error);
+        }
+    }
+
+    </script>
+</body>
+</html>

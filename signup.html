@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="signupscreen.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Left Side (Signup Form) -->
+        <div class="signup-section">
+            <div class="logo">
+                <img src="assets/logo.png" alt="Logo">
+            </div>
+            <h2>Create Your VIRTUGUIDE Account</h2>
+            <p>Explore the campus with ease and navigate iconic landmarks.</p>
+            
+            <form onsubmit="return validateSignUp(event)">
+                <div class="input-group">
+                    <input type="text" id="firstName" placeholder="First Name">
+                    <input type="text" id="lastName" placeholder="Last Name">
+                </div>
+                <small class="error-message" id="nameError"></small>
+
+                <input type="text" id="indexNumber" placeholder="Index Number">
+                <small class="error-message" id="indexError"></small>
+
+                <input type="email" id="email" placeholder="Email">
+                <small class="error-message" id="emailError"></small>
+
+                <input type="text" id="username" placeholder="Username">
+                <small class="error-message" id="usernameError"></small>
+
+                <div class="input-group">
+                    <input type="password" id="password" placeholder="Create Password">
+                    <input type="password" id="confirmPassword" placeholder="Confirm Password">
+                </div>
+                <small class="error-message" id="passwordError"></small>
+
+                <button type="submit" class="signup-btn">Sign Up</button>
+            </form>
+            
+            <p class="signin">Already have an account? <a href="signin.html">Sign in</a></p>
+        </div>
+
+        <!-- Right Side (Preview Section) -->
+        <div class="preview-section">
+            <div class="preview-content">
+                <img src="assets/tour-img-7.jpg" alt="Preview Image">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function validateSignUp(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            let isValid = true;
+
+            let firstName = document.getElementById("firstName").value.trim();
+            let lastName = document.getElementById("lastName").value.trim();
+            let indexNumber = document.getElementById("indexNumber").value.trim();
+            let email = document.getElementById("email").value.trim();
+            let username = document.getElementById("username").value.trim();
+            let password = document.getElementById("password").value.trim();
+            let confirmPassword = document.getElementById("confirmPassword").value.trim();
+
+            let nameError = document.getElementById("nameError");
+            let indexError = document.getElementById("indexError");
+            let emailError = document.getElementById("emailError");
+            let usernameError = document.getElementById("usernameError");
+            let passwordError = document.getElementById("passwordError");
+
+            // Clear previous errors
+            nameError.innerText = "";
+            indexError.innerText = "";
+            emailError.innerText = "";
+            usernameError.innerText = "";
+            passwordError.innerText = "";
+
+            if (firstName === "" || lastName === "") {
+                nameError.innerText = "First and last name are required.";
+                isValid = false;
+            }
+
+            if (indexNumber === "") {
+                indexError.innerText = "Index number is required.";
+                isValid = false;
+            }
+
+            if (email === "") {
+                emailError.innerText = "Email is required.";
+                isValid = false;
+            } else if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+                emailError.innerText = "Enter a valid email address.";
+                isValid = false;
+            }
+
+            if (username === "") {
+                usernameError.innerText = "Username is required.";
+                isValid = false;
+            }
+
+            if (password === "" || confirmPassword === "") {
+                passwordError.innerText = "Both password fields are required.";
+                isValid = false;
+            } else if (password.length < 6) {
+                passwordError.innerText = "Password must be at least 6 characters.";
+                isValid = false;
+            } else if (password !== confirmPassword) {
+                passwordError.innerText = "Passwords do not match.";
+                isValid = false;
+            }
+
+            if (isValid) {
+                // Redirect to homepage.html upon successful validation
+                window.location.href = "homepage.html";
+                return true;
+            }
+
+            return false;
+        }
+    </script>
+
+    <style>
+        .error-message {
+            color: red;
+            font-size: 12px;
+            display: block;
+            margin-bottom: 10px;
+        }
+    </style>
+
+</body>
+</html>
