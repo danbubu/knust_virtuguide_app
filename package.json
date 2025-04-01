@@ -1,0 +1,11 @@
+{
+  "name": "knust-virtuguide",
+  "private": true,
+  "homepage": "https://danbubu.github.io/knust_virtuguide_app",
+  "scripts": {
+    "start": "live-server ./frontend/KNUST-Virtuguide"
+  },
+  "dependencies": {
+    "live-server": "^1.2.2"
+  }
+}
