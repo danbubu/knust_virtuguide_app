@@ -1,0 +1,8 @@
+exclude:
+  - node_modules
+  - backend/node_modules
+  - "*.json"
+  - "*.lock"
+  - README.md
+  - backend/README.md
+  - frontend/README.md
